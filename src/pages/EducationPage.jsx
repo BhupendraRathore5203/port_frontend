@@ -274,8 +274,8 @@ const EducationPage = () => {
                                     key={type.value}
                                     onClick={() => setFilters(prev => ({ ...prev, education_type: type.value }))}
                                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filters.education_type === type.value
-                                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                                         }`}
                                 >
                                     {type.label}
@@ -288,8 +288,8 @@ const EducationPage = () => {
                             <button
                                 onClick={() => setFilters(prev => ({ ...prev, is_featured: !prev.is_featured }))}
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${filters.is_featured
-                                        ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white'
-                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                    ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white'
+                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                                     }`}
                             >
                                 <Sparkles size={14} />
@@ -360,11 +360,11 @@ const EducationPage = () => {
                                         </div>
 
                                         {edu.institution_logo && (
-                                            <div className="w-16 h-16 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                                            <div className="w-20 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
                                                 <img
                                                     src={edu.institution_logo}
                                                     alt={edu.institution}
-                                                    className="w-full h-full object-cover"
+                                                    className="w-20 p-1 object-cover"
                                                 />
                                             </div>
                                         )}
@@ -509,15 +509,6 @@ const EducationPage = () => {
                                 <BookOpen className="w-4 h-4" />
                                 View Learning Projects
                             </Link>
-                            <a
-                                href="https://linkedin.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all font-medium"
-                            >
-                                <ExternalLink className="w-4 h-4" />
-                                LinkedIn Certifications
-                            </a>
                         </div>
                     </div>
                 </motion.div>
@@ -571,6 +562,9 @@ const EducationPage = () => {
                                                             <p className="text-gray-600 dark:text-gray-400">{edu.institution}</p>
                                                         </div>
                                                         <div className="text-right">
+                                                            <div className="institute-logo pb-2 flex justify-end">
+                                                                <img className='w-16 border-b-1 pb-1 border-yellow-400' src={edu.institution_logo} />
+                                                            </div>
                                                             <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                                                 {formatDate(edu.start_date)} - {edu.is_current ? 'Present' : formatDate(edu.end_date)}
                                                             </div>
@@ -620,74 +614,84 @@ const EducationPage = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
-                        >
-                            <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center mb-4">
-                                <BookOpen className="w-6 h-6 text-white" />
-                            </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Technical Skills</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {Array.from(new Set(education.flatMap(e => e.technical_skills || [])))
-                                    .slice(0, 10)
-                                    .map((skill, idx) => (
-                                        <span
-                                            key={idx}
-                                            className="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg text-sm"
-                                        >
-                                            {skill}
-                                        </span>
-                                    ))}
-                            </div>
-                        </motion.div>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
-                        >
-                            <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center mb-4">
-                                <Brain className="w-6 h-6 text-white" />
-                            </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Research & Analysis</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {['Data Analysis', 'Research Methodology', 'Critical Thinking', 'Problem Solving', 'Statistical Analysis', 'Academic Writing']
-                                    .map((skill, idx) => (
-                                        <span
-                                            key={idx}
-                                            className="px-3 py-1.5 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg text-sm"
-                                        >
-                                            {skill}
-                                        </span>
-                                    ))}
-                            </div>
-                        </motion.div>
+                        {/* Skills Section - Already correct */}
+                        {Array.from(new Set(education.flatMap(e => e.skills_learned || []))).length > 0 && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+                            >
+                                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center mb-4">
+                                    <BookOpen className="w-6 h-6 text-white" />
+                                </div>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Technical Skills</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {Array.from(new Set(education.flatMap(e => e.skills_learned || [])))
+                                        .slice(0, 10)
+                                        .map((skill, idx) => (
+                                            <span
+                                                key={idx}
+                                                className="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg text-sm"
+                                            >
+                                                {skill}
+                                            </span>
+                                        ))}
+                                </div>
+                            </motion.div>
+                        )}
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                            className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
-                        >
-                            <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center mb-4">
-                                <Award className="w-6 h-6 text-white" />
-                            </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Professional Development</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {['Project Management', 'Team Leadership', 'Presentation Skills', 'Technical Writing', 'Collaboration', 'Time Management']
-                                    .map((skill, idx) => (
-                                        <span
-                                            key={idx}
-                                            className="px-3 py-1.5 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg text-sm"
-                                        >
-                                            {skill}
-                                        </span>
-                                    ))}
-                            </div>
-                        </motion.div>
+                        {/* Achievements Section - Same pattern */}
+                        {Array.from(new Set(education.flatMap(e => e.achievements || []))).length > 0 && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 }}
+                                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+                            >
+                                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center mb-4">
+                                    <Award className="w-6 h-6 text-white" />
+                                </div>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Achievements</h3>
+                                <div className="space-y-3">
+                                    {Array.from(new Set(education.flatMap(e => e.achievements || [])))
+                                        .map((achievement, idx) => (
+                                            <div key={idx} className="flex items-start gap-3">
+                                                <div className="w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center mt-0.5 flex-shrink-0">
+                                                    <div className="w-2 h-2 rounded-full bg-purple-500 dark:bg-purple-400" />
+                                                </div>
+                                                <p className="text-gray-700 dark:text-gray-300">{achievement}</p>
+                                            </div>
+                                        ))}
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {/* Courses Section - Same pattern */}
+                        {Array.from(new Set(education.flatMap(e => e.courses || []))).length > 0 && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+                            >
+                                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center mb-4">
+                                    <BookOpen className="w-6 h-6 text-white" />
+                                </div>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Courses</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {Array.from(new Set(education.flatMap(e => e.courses || [])))
+                                        .map((course, idx) => (
+                                            <span
+                                                key={idx}
+                                                className="px-3 py-1.5 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg text-sm"
+                                            >
+                                                {course}
+                                            </span>
+                                        ))}
+                                </div>
+                            </motion.div>
+                        )}
                     </div>
                 </div>
             </div>

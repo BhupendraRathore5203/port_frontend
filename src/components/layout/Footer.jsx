@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Github, Linkedin, Twitter, Mail, Heart, Globe, Instagram } from 'lucide-react';
+import { Github, Linkedin, Twitter, Mail, Heart, Globe, Instagram, Phone } from 'lucide-react';
 import { publicApi } from '../../services/api';
 import { Link } from 'react-router-dom';
 
@@ -94,7 +94,7 @@ const Footer = () => {
                   href={`tel:${contactInfo.phone}`}
                   className="inline-block mt-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:underline"
                 >
-                  <Mail className="inline w-4 h-4 mr-1" />
+                  <Phone className="inline w-4 h-4 mr-1" />
                   {contactInfo.phone}
                 </a>
               )}

@@ -154,13 +154,6 @@ const Contact = () => {
     }
   ];
 
-  // const socialLinks = [
-  //   { icon: <Github />, name: 'GitHub', url: 'https://github.com', color: 'from-gray-900 to-gray-800' },
-  //   { icon: <Linkedin />, name: 'LinkedIn', url: 'https://linkedin.com', color: 'from-blue-700 to-blue-600' },
-  //   { icon: <Twitter />, name: 'Twitter', url: 'https://twitter.com', color: 'from-sky-500 to-cyan-400' },
-  //   { icon: <Globe />, name: 'Portfolio', url: '#', color: 'from-indigo-600 to-purple-600' },
-  // ];
-
   const isFormValid = () => {
     return formData.name.length >= 2 &&
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email) &&

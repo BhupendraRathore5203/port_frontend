@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Calendar, 
-  Briefcase, 
-  MapPin, 
-  ExternalLink, 
+import {
+  Calendar,
+  Briefcase,
+  MapPin,
+  ExternalLink,
   ChevronRight,
   Sparkles,
   Filter,
@@ -38,7 +38,7 @@ const ExperiencePage = () => {
         const response = await publicApi.getExperiences({
           page_size: 50
         });
-        
+
         if (response.data) {
           const data = response.data.items || response.data;
           setExperiences(data);
@@ -57,25 +57,25 @@ const ExperiencePage = () => {
 
   useEffect(() => {
     let filtered = [...experiences];
-    
+
     // Apply filters
     if (filters.experience_type !== 'all') {
       filtered = filtered.filter(exp => exp.experience_type === filters.experience_type);
     }
-    
+
     if (filters.is_featured) {
       filtered = filtered.filter(exp => exp.is_featured === true);
     }
-    
+
     if (filters.search) {
       const searchTerm = filters.search.toLowerCase();
-      filtered = filtered.filter(exp => 
+      filtered = filtered.filter(exp =>
         (exp.position && exp.position.toLowerCase().includes(searchTerm)) ||
         (exp.company && exp.company.toLowerCase().includes(searchTerm)) ||
         (exp.description && exp.description.toLowerCase().includes(searchTerm))
       );
     }
-    
+
     setFilteredExperiences(filtered);
   }, [filters, experiences]);
 
@@ -88,7 +88,7 @@ const ExperiencePage = () => {
   ];
 
   const getExperienceColor = (type) => {
-    switch(type) {
+    switch (type) {
       case 'full_time': return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300';
       case 'contract': return 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300';
       case 'freelance': return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
@@ -138,6 +138,65 @@ const ExperiencePage = () => {
     );
   }
 
+
+
+  const DescriptionWithToggle = ({ description, maxHeight = 80 }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [needsExpansion, setNeedsExpansion] = useState(false);
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+      if (contentRef.current) {
+        // Check if content height exceeds max height
+        const contentHeight = contentRef.current.scrollHeight;
+        setNeedsExpansion(contentHeight > maxHeight);
+      }
+    }, [description, maxHeight]);
+
+    const handleToggle = () => {
+      setIsExpanded(!isExpanded);
+    };
+
+    return (
+      <div className="mb-4">
+        <div
+          ref={contentRef}
+          className={`text-gray-600 border-1 border-gray-300 shadow-lg lg:p-6 rounded-lg bg-gray-100 dark:bg-gray-800 mt-4 dark:text-gray-400 overflow-hidden transition-all duration-300 ${!isExpanded && needsExpansion ? 'max-h-50' : 'max-h-none'
+            }`}
+          style={{
+            maxHeight: !isExpanded && needsExpansion ? `${maxHeight}px` : 'none'
+          }}
+        >
+          <div dangerouslySetInnerHTML={{ __html: description }} />
+        </div>
+
+        {needsExpansion && (
+          <button
+            onClick={handleToggle}
+            className="mt-2 text-sm font-medium text-purple-600 dark:text-purple-600 hover:text-blue-800 dark:hover:text-blue-300 flex items-center gap-1 transition-colors"
+          >
+            {isExpanded ? (
+              <>
+                <span className='cursor-pointer'>Show Less</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                </svg>
+              </>
+            ) : (
+              <>
+                <span className='cursor-pointer'>Read More</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </>
+            )}
+          </button>
+        )}
+      </div>
+    );
+  };
+
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20 pb-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -153,7 +212,7 @@ const ExperiencePage = () => {
               Professional Journey
             </span>
           </motion.div>
-          
+
           <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
             Work Experience
           </h1>
@@ -164,7 +223,7 @@ const ExperiencePage = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -181,7 +240,7 @@ const ExperiencePage = () => {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -200,7 +259,7 @@ const ExperiencePage = () => {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -219,7 +278,7 @@ const ExperiencePage = () => {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -247,7 +306,7 @@ const ExperiencePage = () => {
                 <Filter className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Filter Experiences</h3>
               </div>
-              
+
               <div className="flex items-center gap-4">
                 <div className="relative flex-1 max-w-xs">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
@@ -259,7 +318,7 @@ const ExperiencePage = () => {
                     className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
-                
+
                 <button
                   onClick={() => setFilters({ experience_type: 'all', is_featured: false, search: '' })}
                   className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
@@ -274,11 +333,10 @@ const ExperiencePage = () => {
                 <button
                   key={type.value}
                   onClick={() => setFilters(prev => ({ ...prev, experience_type: type.value }))}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    filters.experience_type === type.value
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filters.experience_type === type.value
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
                 >
                   {type.label}
                   <span className="ml-2 px-2 py-0.5 text-xs bg-white/20 rounded-full">
@@ -286,14 +344,13 @@ const ExperiencePage = () => {
                   </span>
                 </button>
               ))}
-              
+
               <button
                 onClick={() => setFilters(prev => ({ ...prev, is_featured: !prev.is_featured }))}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
-                  filters.is_featured
-                    ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${filters.is_featured
+                  ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  }`}
               >
                 <Sparkles size={14} />
                 Featured Only
@@ -332,7 +389,7 @@ const ExperiencePage = () => {
                           </span>
                         )}
                       </div>
-                      
+
                       <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
                         {exp.position}
                       </h3>
@@ -347,7 +404,7 @@ const ExperiencePage = () => {
                           </>
                         )}
                       </div>
-                      
+
                       <div className="text-sm text-gray-500 dark:text-gray-400">
                         <Calendar className="inline mr-1" size={12} />
                         {formatDate(exp.start_date)} - {exp.is_current ? 'Present' : formatDate(exp.end_date)}
@@ -356,11 +413,11 @@ const ExperiencePage = () => {
                         )}
                       </div>
                     </div>
-                    
+
                     {exp.company_logo && (
                       <div className="w-16 h-16 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                        <img 
-                          src={exp.company_logo} 
+                        <img
+                          src={exp.company_logo}
                           alt={exp.company}
                           className="w-full h-full object-cover"
                         />
@@ -369,9 +426,10 @@ const ExperiencePage = () => {
                   </div>
 
                   {exp.description && (
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
-                      {exp.description}
-                    </p>
+                    <DescriptionWithToggle
+                      description={exp.description}
+                      maxHeight={120} // Adjust height as needed
+                    />
                   )}
 
                   {exp.responsibilities && exp.responsibilities.length > 0 && (
@@ -445,7 +503,7 @@ const ExperiencePage = () => {
         </div>
 
         {/* Call to Action */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mt-16 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 dark:from-blue-900/20 dark:via-purple-900/20 dark:to-pink-900/20 rounded-2xl p-8 border border-gray-300 dark:border-gray-700"

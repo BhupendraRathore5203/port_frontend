@@ -92,15 +92,6 @@ const AboutPage = () => {
         }
     };
 
-    const skills = [
-        { name: 'Frontend Development', level: 95, color: 'from-blue-500 to-cyan-500' },
-        { name: 'Backend Development', level: 90, color: 'from-purple-500 to-pink-500' },
-        { name: 'Database Design', level: 85, color: 'from-green-500 to-emerald-500' },
-        { name: 'DevOps & Cloud', level: 80, color: 'from-yellow-500 to-orange-500' },
-        { name: 'UI/UX Design', level: 75, color: 'from-red-500 to-pink-500' },
-        { name: 'Project Management', level: 85, color: 'from-indigo-500 to-purple-500' },
-    ];
-
     const principles = [
         { icon: <Zap />, title: 'Fast & Efficient', description: 'Optimized code and performance-focused solutions' },
         { icon: <Target />, title: 'Quality First', description: 'Clean, maintainable code with thorough testing' },
@@ -184,32 +175,9 @@ const AboutPage = () => {
                             <div className="p-6">
                                 <div className="mb-6">
                                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                        {settings?.site?.self_long_description || "I'm a passionate full-stack developer with expertise in modern web technologies. I specialize in building scalable applications with clean code and intuitive user interfaces. My approach combines technical excellence with creative problem-solving."}
+                                        <div dangerouslySetInnerHTML={{ __html: settings?.site?.self_long_description }} />
+                                        
                                     </p>
-                                </div>
-
-                                {/* Skills */}
-                                <div className="mb-6">
-                                    <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-                                        <Zap className="w-5 h-5 text-yellow-500" />
-                                        Core Skills
-                                    </h3>
-                                    <div className="space-y-4">
-                                        {skills.map((skill) => (
-                                            <div key={skill.name} className="space-y-2">
-                                                <div className="flex justify-between text-sm">
-                                                    <span className="text-gray-700 dark:text-gray-300">{skill.name}</span>
-                                                    <span className="text-gray-600 dark:text-gray-400">{skill.level}%</span>
-                                                </div>
-                                                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                                    <div
-                                                        className={`h-2 rounded-full bg-gradient-to-r ${skill.color}`}
-                                                        style={{ width: `${skill.level}%` }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
                                 </div>
 
                                 {/* Work Principles */}

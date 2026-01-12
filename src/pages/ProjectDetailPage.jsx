@@ -455,7 +455,7 @@ const ProjectDetailPage = () => {
                               <div className="flex items-center gap-2">
                                 <div className="w-16 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
                                   <div
-                                    className={`h-full ${tech.color || 'bg-gradient-to-r from-blue-500 to-purple-500'} rounded-full`}
+                                    className={`h-full bg-gradient-to-r ${tech.color || 'from-blue-500 to-purple-500'} rounded-full`}
                                     style={{ width: `${tech.proficiency || 0}%` }}
                                   />
                                 </div>
