@@ -11,6 +11,7 @@ const Footer = () => {
     const fetchSiteSettings = async () => {
       try {
         const response = await publicApi.getAllSettings();
+        // console.log('Footer Settings:', response.data); // Debug log
         setSiteSettings(response.data);
       } catch (error) {
         console.error('Failed to fetch site settings:', error);
@@ -27,18 +28,28 @@ const Footer = () => {
     mail: <Mail size={20} />,
     globe: <Globe size={20} />,
     instagram: <Instagram size={20} />,
+    facebook: <Globe size={20} />, // Facebook icon
+    youtube: <Globe size={20} />, // YouTube icon
+    discord: <Globe size={20} />, // Discord icon
   };
 
   const getSocialLinks = () => {
     if (!siteSettings?.social) return [];
 
     return Object.entries(siteSettings.social)
-      .filter(([_, url]) => url)
+      .filter(([_, url]) => url && url.trim() !== '')
       .map(([platform, url]) => ({
         platform,
         url,
-        icon: socialIcons[platform] || <Globe size={20} />
+        icon: socialIcons[platform.toLowerCase()] || <Globe size={20} />
       }));
+  };
+
+  // Also get contact info from API
+  const contactInfo = {
+    email: siteSettings?.site?.contact_email || '',
+    phone: siteSettings?.site?.contact_phone || '',
+    location: siteSettings?.site?.location || ''
   };
 
   return (
@@ -69,22 +80,22 @@ const Footer = () => {
               <p className="text-gray-600 dark:text-gray-400">
                 {siteSettings?.site?.tagline || 'Showcasing amazing projects across multiple technologies and frameworks.'}
               </p>
-              {siteSettings?.site?.contact_email && (
+              {contactInfo.email && (
                 <a
-                  href={`mailto:${siteSettings.site.contact_email}`}
+                  href={`mailto:${contactInfo.email}`}
                   className="inline-block mt-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:underline"
                 >
                   <Mail className="inline w-4 h-4 mr-1" />
-                  {siteSettings.site.contact_email}
+                  {contactInfo.email}
                 </a>
               )}
-              {siteSettings?.site?.contact_phone && (
+              {contactInfo.phone && (
                 <a
-                  href={`tel:${siteSettings.site.contact_phone}`}
+                  href={`tel:${contactInfo.phone}`}
                   className="inline-block mt-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:underline"
                 >
                   <Mail className="inline w-4 h-4 mr-1" />
-                  {siteSettings.site.contact_phone}
+                  {contactInfo.phone}
                 </a>
               )}
             </div>
@@ -170,7 +181,7 @@ const Footer = () => {
           {/* Social */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Connect</h3>
-            <div className="flex space-x-4">
+            <div className="flex flex-wrap gap-3">
               {getSocialLinks().map((link) => (
                 <a
                   key={link.platform}
@@ -179,6 +190,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all hover:-translate-y-1 text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300"
                   aria-label={link.platform}
+                  title={link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}
                 >
                   {link.icon}
                 </a>

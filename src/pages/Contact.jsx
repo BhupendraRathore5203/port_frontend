@@ -3,11 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Send, Mail, MapPin, Phone, Linkedin, Github, Twitter,
   MessageSquare, CheckCircle, AlertCircle, Loader2,
-  Globe, User, Briefcase, Shield, Zap, Sparkles
+  Globe, User, Briefcase, Shield, Zap, Sparkles,
+  GithubIcon,
+  LinkedinIcon,
+  TwitterIcon,
+  Globe2,
+  Instagram,
+  Youtube,
+  Globe2Icon
 } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
 import { publicApi } from '../services/api';
 import { useSiteSettings } from '../hooks/useSiteSettings';
+import { BsDiscord } from 'react-icons/bs';
 
 
 const Contact = () => {
@@ -23,6 +31,50 @@ const Contact = () => {
   const messageLength = formData.message.length;
   const { settings, loading } = useSiteSettings();
 
+
+  // Add this function to extract social links from API response:
+  const getSocialLinksFromAPI = (settings) => {
+    if (!settings?.social) return [];
+
+    const socialConfig = {
+      github: { name: 'GitHub', color: 'from-gray-900 to-gray-800' },
+      linkedin: { name: 'LinkedIn', color: 'from-blue-700 to-blue-600' },
+      twitter: { name: 'Twitter', color: 'from-sky-500 to-cyan-400' },
+      facebook: { name: 'Facebook', color: 'from-blue-600 to-blue-500' },
+      instagram: { name: 'Instagram', color: 'from-pink-600 to-purple-600' },
+      youtube: { name: 'YouTube', color: 'from-red-600 to-red-500' },
+      discord: { name: 'Discord', color: 'from-indigo-600 to-purple-600' },
+      globe: { name: 'Website', color: 'from-green-600 to-emerald-500' },
+    };
+
+    return Object.entries(settings.social)
+      .filter(([_, url]) => url && url.trim() !== '')
+      .map(([platform, url]) => ({
+        platform,
+        url,
+        name: socialConfig[platform]?.name || platform.charAt(0).toUpperCase() + platform.slice(1),
+        color: socialConfig[platform]?.color || 'from-gray-600 to-gray-500',
+        icon: getSocialIcon(platform)
+      }));
+  };
+
+  const getSocialIcon = (platform) => {
+    const icons = {
+      github: <GithubIcon />,
+      linkedin: <LinkedinIcon />,
+      twitter: <TwitterIcon />,
+      facebook: <Globe2 />, // You can replace with Facebook icon if you have it
+      instagram: <Instagram />, // You can replace with Instagram icon if you have it
+      youtube: <Youtube />, // You can replace with YouTube icon if you have it
+      discord: <BsDiscord />, // You can replace with Discord icon if you have it
+      globe: <Globe2Icon />,
+    };
+    return icons[platform] || <Globe />;
+  };
+
+  // Then in your Contact component JSX, replace the hardcoded socialLinks:
+  const apiSocialLinks = getSocialLinksFromAPI(settings);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -31,24 +83,26 @@ const Contact = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     else if (formData.name.length < 2) newErrors.name = 'Minimum 2 characters';
-    
+
     if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) 
+    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email))
       newErrors.email = 'Invalid email';
-    
+
     if (!formData.subject.trim()) newErrors.subject = 'Subject is required';
     else if (formData.subject.length < 5) newErrors.subject = 'Minimum 5 characters';
-    
+
     if (!formData.message.trim()) newErrors.message = 'Message is required';
     else if (formData.message.length < 20) newErrors.message = 'Minimum 20 characters';
     else if (formData.message.length > 2000) newErrors.message = 'Maximum 2000 characters';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  const socialLinks = getSocialLinksFromAPI(settings);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -80,15 +134,15 @@ const Contact = () => {
     {
       icon: <Mail />,
       title: 'Email',
-      value: settings?.site?.contact_email || 'contact@example.com',
-      link: `mailto:${settings?.site?.contact_email || 'contact@example.com'}`,
+      value: settings?.site?.contact_email || 'bhupendrasingh05022003@gmail.com',
+      link: `mailto:${settings?.site?.contact_email || 'bhupendrasingh05022003@gmail.com'}`,
       color: 'from-blue-500 to-cyan-500'
     },
     {
       icon: <Phone />,
       title: 'Phone',
-      value: settings?.site?.contact_phone || '+1 (555) 123-4567',
-      link: `tel:${settings?.site?.contact_phone || '+15551234567'}`,
+      value: settings?.site?.contact_phone || '+917297837735',
+      link: `tel:${settings?.site?.contact_phone || '+917297837735'}`,
       color: 'from-green-500 to-emerald-500'
     },
     {
@@ -100,12 +154,12 @@ const Contact = () => {
     }
   ];
 
-  const socialLinks = [
-    { icon: <Github />, name: 'GitHub', url: 'https://github.com', color: 'from-gray-900 to-gray-800' },
-    { icon: <Linkedin />, name: 'LinkedIn', url: 'https://linkedin.com', color: 'from-blue-700 to-blue-600' },
-    { icon: <Twitter />, name: 'Twitter', url: 'https://twitter.com', color: 'from-sky-500 to-cyan-400' },
-    { icon: <Globe />, name: 'Portfolio', url: '#', color: 'from-indigo-600 to-purple-600' },
-  ];
+  // const socialLinks = [
+  //   { icon: <Github />, name: 'GitHub', url: 'https://github.com', color: 'from-gray-900 to-gray-800' },
+  //   { icon: <Linkedin />, name: 'LinkedIn', url: 'https://linkedin.com', color: 'from-blue-700 to-blue-600' },
+  //   { icon: <Twitter />, name: 'Twitter', url: 'https://twitter.com', color: 'from-sky-500 to-cyan-400' },
+  //   { icon: <Globe />, name: 'Portfolio', url: '#', color: 'from-indigo-600 to-purple-600' },
+  // ];
 
   const isFormValid = () => {
     return formData.name.length >= 2 &&
@@ -129,13 +183,13 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen pt-20 pb-12 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <Toaster 
-        position="top-right" 
+      <Toaster
+        position="top-right"
         toastOptions={{
           duration: 4000,
         }}
       />
-      
+
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <motion.div
@@ -181,14 +235,13 @@ const Contact = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border ${
-                        errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
-                      } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                      className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                        } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                       placeholder="Your name"
                     />
                     {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium mb-2">Email *</label>
                     <input
@@ -196,9 +249,8 @@ const Contact = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border ${
-                        errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
-                      } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                      className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                        } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                       placeholder="your@email.com"
                     />
                     {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
@@ -211,9 +263,8 @@ const Contact = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border ${
-                      errors.subject ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
-                    } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                    className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border ${errors.subject ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                      } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                     placeholder="Project inquiry"
                   />
                   {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject}</p>}
@@ -226,17 +277,15 @@ const Contact = () => {
                     value={formData.message}
                     onChange={handleChange}
                     rows="5"
-                    className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border ${
-                      errors.message ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
-                    } focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
+                    className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border ${errors.message ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                      } focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
                     placeholder="Tell me about your project..."
                   />
                   <div className="flex justify-between mt-2">
                     {errors.message && <p className="text-red-500 text-sm">{errors.message}</p>}
-                    <span className={`text-sm ${
-                      messageLength > 1800 ? 'text-red-500' : 
-                      messageLength > 1500 ? 'text-yellow-500' : 'text-gray-500'
-                    }`}>
+                    <span className={`text-sm ${messageLength > 1800 ? 'text-red-500' :
+                        messageLength > 1500 ? 'text-yellow-500' : 'text-gray-500'
+                      }`}>
                       {messageLength}/2000
                     </span>
                   </div>
