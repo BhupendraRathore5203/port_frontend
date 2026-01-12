@@ -407,7 +407,7 @@ const Home = () => {
                 className={`relative bg-gradient-to-r
                  rounded-xl p-5 shadow-lg
                  flex flex-col items-center text-center
-                 group transition-all !${tech.color}`}
+                 group transition-all ${tech.color}`}
               >
                 <span
                   style={{ background: settings?.theme?.primary_color }}
