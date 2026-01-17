@@ -44,7 +44,7 @@ const Technologies = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('proficiency');
+  const [sortBy, setSortBy] = useState();
   const [technologies, setTechnologies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -143,7 +143,7 @@ const Technologies = () => {
         case 'newest':
           return new Date(b.created_at) - new Date(a.created_at);
         default:
-          return b.proficiency - a.proficiency;
+          return b.order - a.order;
       }
     });
     
