@@ -143,7 +143,7 @@ const Technologies = () => {
         case 'newest':
           return new Date(b.created_at) - new Date(a.created_at);
         default:
-          return b.order - a.order;
+          return a.order - b.order;
       }
     });
     
