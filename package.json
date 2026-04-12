@@ -12,7 +12,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@tailwindcss/vite": "^4.1.18",
-    "axios": "^1.13.2",
+    "axios": "^1.15.0",
     "canvas-confetti": "^1.9.4",
     "dompurify": "^3.3.1",
     "framer-motion": "^12.23.26",
